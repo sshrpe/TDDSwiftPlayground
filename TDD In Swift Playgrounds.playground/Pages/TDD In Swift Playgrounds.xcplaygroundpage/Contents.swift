@@ -21,13 +21,13 @@ class MyTests : XCTestCase {
 //: In order to report filing tests, we also need to add a test observer, conforming to XCTestObservation, which will be notified whenever a test fails and print the failure to the console. The observer is then added to the XCTestObservationCenter to allow the system to notify the observer of test failures:
 
 class PlaygroundTestObserver : NSObject, XCTestObservation {
-    @objc func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    @objc func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         print("Test failed on line \(lineNumber): \(testCase.name), \(description)")
     }
 }
 
 let observer = PlaygroundTestObserver()
-let center = XCTestObservationCenter.sharedTestObservationCenter()
+let center = XCTestObservationCenter.shared()
 center.addTestObserver(observer)
 
 
@@ -41,7 +41,7 @@ struct TestRunner {
         print("Running test suite \(testClass)")
         let tests = testClass as! XCTestCase.Type
         let testSuite = tests.defaultTestSuite()
-        testSuite.runTest()
+        testSuite.run()
         let run = testSuite.testRun as! XCTestSuiteRun
         
         print("Ran \(run.executionCount) tests in \(run.testDuration)s with \(run.totalFailureCount) failures")
@@ -53,6 +53,6 @@ struct TestRunner {
 //:
 //: Lastly, call the runTests() function, passing in the test class you wish to run (in this case, 'My Tests'
 
-TestRunner().runTests(MyTests)
+TestRunner().runTests(testClass: MyTests.self)
 
 //: [Next](@next)
