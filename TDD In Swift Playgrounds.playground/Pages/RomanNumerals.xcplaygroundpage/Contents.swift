@@ -43,13 +43,13 @@ class RomanNumeralConverterTests: XCTestCase {
 
 
 class PlaygroundTestObserver : NSObject, XCTestObservation {
-    @objc func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    @objc func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         print("Test failed on line \(lineNumber): \(testCase.name), \(description)")
     }
 }
 
 let observer = PlaygroundTestObserver()
-let center = XCTestObservationCenter.sharedTestObservationCenter()
+let center = XCTestObservationCenter.shared()
 center.addTestObserver(observer)
 
 
@@ -60,7 +60,7 @@ struct TestRunner {
         print("Running test suite \(testClass)")
         let tests = testClass as! XCTestCase.Type
         let testSuite = tests.defaultTestSuite()
-        testSuite.runTest()
+        testSuite.run()
         let run = testSuite.testRun as! XCTestSuiteRun
         
         print("Ran \(run.executionCount) tests in \(run.testDuration)s with \(run.totalFailureCount) failures")
@@ -68,6 +68,6 @@ struct TestRunner {
     
 }
 
-TestRunner().runTests(RomanNumeralConverterTests)
+TestRunner().runTests(testClass: RomanNumeralConverterTests.self)
 
 //: [Next](@next)
